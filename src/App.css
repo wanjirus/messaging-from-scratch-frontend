@@ -27,6 +27,38 @@
 .App-link {
   color: #61dafb;
 }
+.rowColor{
+  background-color: darkgrey;
+}
+.chat{
+      background-color:white;
+      height:fit-content;                        
+       border-top:8px solid;                 
+       border-left:2px solid; 
+       border-right:2px solid;    
+       border-color:purple;
+       border-radius:5%;
+}
+.senderMessages{                              
+  /* margin-top:10px;                                
+  margin-right:5px;                               
+  background-color:purple;                
+  width:45%;
+  position:initial;
+  color:white;
+  border-radius:20px; */
+}
+.receivedMessages{
+  text-align:center;
+  background-color:navy;
+  margin-top:10px;
+  width:45%;
+  display:'';
+  margin-left:5px;
+  border-radius:20px;
+  color:white;
+
+}
 
 @keyframes App-logo-spin {
   from {
