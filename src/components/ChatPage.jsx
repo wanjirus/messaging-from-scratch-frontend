@@ -47,7 +47,7 @@ componentDidMount(){
 
                               this.state.sentMessages.map(
                                   message => 
-                                  <div className="container" style={{
+                                  <div key = {message.id} className="container" style={{
                                   textAlign:''
                                   ,marginTop:'10px'
                                   ,marginRight:"5px"
@@ -66,7 +66,7 @@ componentDidMount(){
                               
                               {this.state.receivedMessages.map(
                                   Message => 
-                                  <div style={{
+                                  <div  key = {Message.id} style={{
                                   textAlign:'center',
                                   backgroundColor:'navy',
                                   marginTop:'10px',

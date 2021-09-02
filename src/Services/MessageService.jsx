@@ -19,6 +19,10 @@ class MessageService{
     getChatExists(){
         return axios.get(MESSAGE_API_BASE_URL + '/' + 'checkChat' , {params})
     }
+    getChatId(){
+        return axios.get(MESSAGE_API_BASE_URL + '/' + 'chatId' , {params})
+
+    }
 }
 
 export default new MessageService();
