@@ -5,6 +5,7 @@ import NewChat from './components/NewChat';
 import ChatPage from './components/ChatPage';
 
 function App() {
+
   return (
     <div>
      <Router>

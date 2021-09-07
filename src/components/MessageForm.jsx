@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MessageService from '../Services/MessageService';
 import { v4 as uuidv4 } from 'uuid';
+import { SendOutlined } from '@ant-design/icons';
+import { Button } from 'bootstrap';
 const chat= '';
 class MessageForm extends Component {
     constructor(props){
@@ -14,6 +16,7 @@ class MessageForm extends Component {
 
         }
     this.saveMessage=this.saveMessage.bind(this);
+    this.changeMessage=this.changeMessage.bind(this);
     }
     componentDidMount(){
         MessageService.getChatExists().then(res=>{
@@ -27,11 +30,20 @@ class MessageForm extends Component {
                     this.setState({chat:res.data})
                     console.log(this.state.chat.chatId);
                     localStorage.setItem('chatId',this.state.chat.chatId);
-                });}
+                   
+                });
+               
+            }
+            
         });
+    
     }
     saveMessage=(e)=>{
         e.preventDefault();
+        if(!this.state.message){
+            alert('please enter a message')
+            return
+        }
         if(this.state.value === false){
             localStorage.setItem('chatId',this.state.chat);
             const message ={
@@ -51,12 +63,12 @@ class MessageForm extends Component {
             };
             MessageService.createMessage(message);   
             }
-
+            window.location.reload(false);
     }
     changeMessage=(event)=>{
-        this.setState({message: event.target.value});}
-        cancel(){
-           this.props.history.push('/chat');}
+        event.preventDefault();
+        this.setState({message: event.target.value});
+    }
     render(){
         return (
             <div>
@@ -64,11 +76,23 @@ class MessageForm extends Component {
                     <div className='row'>
                      <div className='card-body'>
                       <form>
-                            <div className='form-group'>
-                              
-                               <input placeholder='message' name='message' className='form-control' value={this.state.message} onChange={this.changeMessage}/>
-
-                                <button className='btn btn-success' onClick={this.saveMessage}>send</button>
+                      <div class="input-group mb-3">
+                          <textarea
+                          style={{backgroundColor:'white',border:'1px solid purple',fontSize:'15px',borderRadius:'10px'}}
+                          className='form-control'
+                          value={this.state.message} 
+                          onChange={this.changeMessage}
+                          type="text" 
+                          placeholder="Message"/>
+                    <div class="input-group-append">
+                        <button
+                         className='btn' 
+                          onClick={this.saveMessage}>
+                              <SendOutlined 
+                            className="send-icon" 
+                            style={{color:'blue',fontSize:'40px'}}/>
+                       </button>
+                            </div>
                             
                             </div>
                     </form>   
