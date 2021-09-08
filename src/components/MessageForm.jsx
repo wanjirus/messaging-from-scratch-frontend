@@ -77,8 +77,23 @@ class MessageForm extends Component {
                      <div className='card-body'>
                       <form>
                       <div class="input-group mb-3">
-                          <textarea
-                          style={{backgroundColor:'white',border:'1px solid purple',fontSize:'15px',borderRadius:'10px'}}
+                          <input
+                          style={{backgroundColor:'white',
+                          outline:'none',
+                          outlineStyle:'none',
+                          borderTop:'none',
+                          borderLeft:'none',
+                          borderRight:'none',
+                          marginLeft:'5%',
+                
+                          borderBottom:'1px solid purple',
+                          fontSize:'15px',
+                          
+                        
+                        
+                        }}
+                          
+                          
                           className='form-control'
                           value={this.state.message} 
                           onChange={this.changeMessage}
