@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
+import UploadService from "../Services/upload-file.service";
 import MessageService from '../Services/MessageService';
 import { v4 as uuidv4 } from 'uuid';
-import { SendOutlined } from '@ant-design/icons';
-import { Button } from 'bootstrap';
-const chat= '';
+import { PaperClipOutlined, PictureOutlined, SendOutlined, UploadOutlined } from '@ant-design/icons';
 class MessageForm extends Component {
     constructor(props){
-        super(props)
+        super(props);
+        this.selectFile = this.selectFile.bind(this);
+        // this.upload = this.upload.bind(this);
         this.state = {
-          
+            selectedFiles: undefined,
           message:'',
+          message2:'',
           value:'',
           chat: ''
-               
-
         }
     this.saveMessage=this.saveMessage.bind(this);
     this.changeMessage=this.changeMessage.bind(this);
-    }
+    // this.upload = this.upload.bind(this);  
+  }
     componentDidMount(){
         MessageService.getChatExists().then(res=>{
             this.setState({value:res.data})
@@ -36,9 +37,20 @@ class MessageForm extends Component {
             }
             
         });
-    
+        UploadService.getFiles().then((response) => {
+            this.setState({
+              fileInfos: response.data,
+            });
+          });
     }
+    selectFile(event) {
+        this.setState({
+          selectedFiles: event.target.files,
+        });
+      }
     saveMessage=(e)=>{
+
+      if(!this.state.selectedFiles){
         e.preventDefault();
         if(!this.state.message){
             alert('please enter a message')
@@ -65,18 +77,111 @@ class MessageForm extends Component {
             }
             window.location.reload(false);
     }
+  
+
+  else{
+    
+      //e.target.preventDefault();
+        let currentFile = this.state.selectedFiles[0];
+    
+        this.setState({
+          progress: 0,
+          currentFile: currentFile,
+        });
+    
+        UploadService.upload(currentFile, (event) => {
+          this.setState({
+            progress: Math.round((100 * event.loaded) / event.total),
+          });
+        })
+          .then((response) => {
+            this.setState({
+              message: response.data.message,
+            });
+            return UploadService.getFiles();
+          })
+          .then((files) => {
+            this.setState({
+              fileInfos: files.data,
+            });
+          })
+          .catch(() => {
+            this.setState({
+              progress: 0,
+              message: "Could not upload the file!",
+              currentFile: undefined,
+            });
+          });
+    
+        this.setState({
+          selectedFiles: undefined,
+        });
+      }
+  }
     changeMessage=(event)=>{
         event.preventDefault();
         this.setState({message: event.target.value});
     }
+    selectFile(event) {
+        this.setState({
+          selectedFiles: event.target.files,
+        });
+      }
     render(){
+        const {
+            selectedFiles,
+            currentFile,
+            progress,
+            message2,
+            fileInfos,
+          } = this.state;
         return (
             <div>
+{currentFile && (
+          <div className="progress">
+            <div
+              className="progress-bar progress-bar-info progress-bar-striped"
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style={{ width: progress + "%" }}
+            >
+              {progress}%
+            </div>
+          </div>
+        )}
+        <div className="alert alert-light" role="alert">
+          {message2}
+        </div>
                 <div className='container'>
                     <div className='row'>
                      <div className='card-body'>
+                     
+                     
+                     
+                     
+                     
                       <form>
-                      <div class="input-group mb-3">
+                      <div class="input-group-append">
+                      <label htmlFor='upload-button'>
+            <span className = 'image-button'>
+                <PaperClipOutlined
+                 className = "picture -icon" 
+                 style={{color:'blue',fontSize:'40px'}}/>
+
+            </span>    
+            </label> 
+            <input type='file' 
+                    multiple={false}
+                     id="upload-button"
+                    style={{display: 'none'}}
+                    onChange = {this.selectFile}   
+            />          
+            </div>
+                   <div className="input-group mb-3">
+                      
+                          
                           <input
                           style={{backgroundColor:'white',
                           outline:'none',
@@ -84,16 +189,13 @@ class MessageForm extends Component {
                           borderTop:'none',
                           borderLeft:'none',
                           borderRight:'none',
-                          marginLeft:'5%',
+                          marginLeft:'20%',
                 
                           borderBottom:'1px solid purple',
-                          fontSize:'15px',
+                          fontSize:'1px',
                           
-                        
-                        
                         }}
-                          
-                          
+                      
                           className='form-control'
                           value={this.state.message} 
                           onChange={this.changeMessage}
@@ -102,11 +204,17 @@ class MessageForm extends Component {
                     <div class="input-group-append">
                         <button
                          className='btn' 
+                        //  disabled={!selectedFiles}
                           onClick={this.saveMessage}>
                               <SendOutlined 
                             className="send-icon" 
                             style={{color:'blue',fontSize:'40px'}}/>
                        </button>
+
+
+
+
+
                             </div>
                             
                             </div>

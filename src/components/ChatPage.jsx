@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import MessageService from '../Services/MessageService';
 import MessageForm from './MessageForm';
+import UploadFiles from './upload-files.component';
 //const keys;
 class ChatPage extends Component {
     constructor(props){
@@ -40,7 +41,9 @@ componentDidUpdate(){
         return (
             <Container>
                  <Row>
-                      <Col md={{ span: 6, offset: 3 }}>
+                     
+                     <Col  md={{ span: 3, offset: 0}}> <UploadFiles /></Col>
+                      <Col md={{ span: 6, offset: 0}}>
                         <div>  
                           <div className='chat'>
                           <div className='sentMes'>{
