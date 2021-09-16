@@ -168,7 +168,7 @@ class MessageForm extends Component {
             <span className = 'image-button'>
                 <PaperClipOutlined
                  className = "picture -icon" 
-                 style={{color:'blue',fontSize:'40px'}}/>
+                 style={{ color:'blue',fontSize:'40px'}}/>
 
             </span>    
             </label> 
@@ -192,13 +192,12 @@ class MessageForm extends Component {
                           marginLeft:'20%',
                 
                           borderBottom:'1px solid purple',
-                          fontSize:'1px',
                           
-                        }}
+                         }}
                       
                           className='form-control'
-                          value={this.state.message} 
-                          onChange={this.changeMessage}
+                           value={this.state.message} 
+                         onChange={this.changeMessage}
                           type="text" 
                           placeholder="Message"/>
                     <div class="input-group-append">

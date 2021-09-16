@@ -54,7 +54,7 @@ componentDidUpdate(){
                                     <p 
                                     // className="Container"
                                     > {message.message} </p>
-                                     <p className='sentTime'>{message.createdAt}</p>
+                                     {/* <p className='sentTime'>{message.createdAt}</p> */}
                                 </div>
                                  )} 
                            </div>
@@ -64,7 +64,7 @@ componentDidUpdate(){
                               <div key = {Message.id}
                               className="receivedMessages">
                                  <p> {Message.message}</p>
-                                  <p className='receivedTime'>{Message.createdAt}</p>
+                                  {/* <p className='receivedTime'>{Message.createdAt}</p> */}
                                </div>                             
                                )}
                         </div>                      
