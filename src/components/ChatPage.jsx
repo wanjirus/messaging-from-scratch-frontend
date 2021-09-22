@@ -42,7 +42,7 @@ componentDidUpdate(){
             <Container>
                  <Row>
                      
-                     <Col  md={{ span: 3, offset: 0}}> <UploadFiles /></Col>
+                     
                       <Col md={{ span: 6, offset: 0}}>
                         <div>  
                           <div className='chat'>
@@ -75,6 +75,7 @@ componentDidUpdate(){
                         </div> 
 
     </Col>
+    <Col  md={{ span: 3, offset: 0}}> <UploadFiles /></Col>
   </Row>
             </Container>
         );

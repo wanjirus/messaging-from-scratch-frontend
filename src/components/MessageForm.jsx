@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import UploadService from "../Services/upload-file.service";
 import MessageService from '../Services/MessageService';
 import { v4 as uuidv4 } from 'uuid';
-import { PaperClipOutlined, PictureOutlined, SendOutlined, UploadOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, SendOutlined} from '@ant-design/icons';
 class MessageForm extends Component {
     constructor(props){
         super(props);
         this.selectFile = this.selectFile.bind(this);
-        // this.upload = this.upload.bind(this);
         this.state = {
-            selectedFiles: undefined,
+            selectedFiles:'',
+            currentFile:[],
+            showFile:[],
           message:'',
+          fileInfo:'',
           message2:'',
           value:'',
           chat: ''
         }
     this.saveMessage=this.saveMessage.bind(this);
     this.changeMessage=this.changeMessage.bind(this);
-    // this.upload = this.upload.bind(this);  
-  }
+    }
     componentDidMount(){
         MessageService.getChatExists().then(res=>{
             this.setState({value:res.data})
@@ -39,15 +40,20 @@ class MessageForm extends Component {
         });
         UploadService.getFiles().then((response) => {
             this.setState({
-              fileInfos: response.data,
+              fileInfo: response.data,
             });
+            console.log("here here")
+        console.log(this.state.showFile);
           });
     }
     selectFile(event) {
         this.setState({
           selectedFiles: event.target.files,
         });
+        console.log("here here")
+      localStorage.setItem('file',this.state.selectedFiles);
       }
+      
     saveMessage=(e)=>{
 
       if(!this.state.selectedFiles){
@@ -76,64 +82,62 @@ class MessageForm extends Component {
             MessageService.createMessage(message);   
             }
             window.location.reload(false);
-    }
+     }
   
 
-  else{
-    
-      //e.target.preventDefault();
+   else {
+  
         let currentFile = this.state.selectedFiles[0];
-    
         this.setState({
           progress: 0,
-          currentFile: currentFile,
+          showFile: currentFile,
         });
-    
         UploadService.upload(currentFile, (event) => {
           this.setState({
             progress: Math.round((100 * event.loaded) / event.total),
+            showFile:currentFile,
           });
         })
           .then((response) => {
             this.setState({
-              message: response.data.message,
+              message2: response.data.message,
             });
+            localStorage.setItem('message',this.state.message2);
+            const  message={
+              senderEmail:localStorage.getItem('senderEmail'),
+              receiverEmail:localStorage.getItem('receiverEmail'),
+              message:this.state.message2,
+              chatId:localStorage.getItem('chatId')
+          };
+          MessageService.createMessage(message);  
             return UploadService.getFiles();
           })
           .then((files) => {
             this.setState({
-              fileInfos: files.data,
+              fileInfo: files.data,
             });
+            
           })
           .catch(() => {
             this.setState({
               progress: 0,
               message: "Could not upload the file!",
-              currentFile: undefined,
             });
-          });
-    
-        this.setState({
-          selectedFiles: undefined,
-        });
+          }); 
       }
-  }
+    }
     changeMessage=(event)=>{
         event.preventDefault();
         this.setState({message: event.target.value});
     }
-    selectFile(event) {
-        this.setState({
-          selectedFiles: event.target.files,
-        });
-      }
     render(){
         const {
             selectedFiles,
             currentFile,
             progress,
             message2,
-            fileInfos,
+            fileInfo,
+            showFile,
           } = this.state;
         return (
             <div>
@@ -148,6 +152,7 @@ class MessageForm extends Component {
               style={{ width: progress + "%" }}
             >
               {progress}%
+             
             </div>
           </div>
         )}
@@ -220,6 +225,7 @@ class MessageForm extends Component {
                     </form>   
 
                 </div>
+                <div></div>
             </div>
 
        </div>
