@@ -5,6 +5,7 @@ class UploadFilesService {
     let formData = new FormData();
 
     formData.append("file", file);
+    formData.append('chatId', localStorage.getItem('chatId'));
 
     return http.post("/upload", formData, {
       headers: {

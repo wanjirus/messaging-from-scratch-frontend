@@ -24,17 +24,20 @@ class MessageForm extends Component {
         MessageService.getChatExists().then(res=>{
             this.setState({value:res.data})
             console.log(this.state.value);
-            if(this.state.value === false){
-                   this.setState({chat:uuidv4()})
-                   console.log(this.state.chat);}
+            
+            if(!this.state.value){
+                
+              this.setState({chat:uuidv4()})
+              console.log(this.state.chat);
+            }
             else{
-                MessageService.getChatId().then(res=>{
-                    this.setState({chat:res.data})
-                    console.log(this.state.chat.chatId);
-                    localStorage.setItem('chatId',this.state.chat.chatId);
-                   
-                });
+        
+              MessageService.getChatId().then(res=>{
+                this.setState({chat:res.data})
+                console.log(this.state.chat.chatId);
+                localStorage.setItem('chatId',this.state.chat.chatId);
                
+            });
             }
             
         });
@@ -45,7 +48,7 @@ class MessageForm extends Component {
             console.log("here here")
         console.log(this.state.showFile);
           });
-    }
+        };
     selectFile(event) {
         this.setState({
           selectedFiles: event.target.files,
