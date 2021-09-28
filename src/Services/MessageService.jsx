@@ -7,21 +7,24 @@ const params={
 }
 class MessageService{
      getMessageBySender(){
-         return axios.get(MESSAGE_API_BASE_URL+'/'+'sender',{params})
+         return axios.get(MESSAGE_API_BASE_URL+ '/sender',{params})
         }
     getMessageByReceiver(){
-            return axios.get(MESSAGE_API_BASE_URL + '/' + 'receiver',{params})
+            return axios.get(MESSAGE_API_BASE_URL + '/receiver',{params})
        }
     
     createMessage(message){
         return axios.post(MESSAGE_API_BASE_URL,message)
     }
     getChatExists(){
-        return axios.get(MESSAGE_API_BASE_URL + '/' + 'checkChat' , {params})
+        return axios.get(MESSAGE_API_BASE_URL + '/checkChat' , {params})
     }
     getChatId(){
-        return axios.get(MESSAGE_API_BASE_URL + '/' + 'chatId' , {params})
+        return axios.get(MESSAGE_API_BASE_URL + '/chatId' , {params})
 
+    }
+    deleteChat(){
+        return axios.get(MESSAGE_API_BASE_URL +'/deleteChat',{params})
     }
 }
 

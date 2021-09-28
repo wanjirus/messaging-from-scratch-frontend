@@ -12,7 +12,7 @@ class MessageForm extends Component {
             currentFile:[],
             showFile:[],
           message:'',
-          fileInfo:'',
+           fileInfo:'',
           message2:'',
           value:'',
           chat: ''
@@ -45,16 +45,12 @@ class MessageForm extends Component {
             this.setState({
               fileInfo: response.data,
             });
-            console.log("here here")
-        console.log(this.state.showFile);
           });
-        };
-    selectFile(event) {
+        }
+    selectFile = (event) =>{
         this.setState({
           selectedFiles: event.target.files,
         });
-        console.log("here here")
-      localStorage.setItem('file',this.state.selectedFiles);
       }
       
     saveMessage=(e)=>{
@@ -65,7 +61,7 @@ class MessageForm extends Component {
             alert('please enter a message')
             return
         }
-        if(this.state.value === false){
+        if(!this.state.value){
             localStorage.setItem('chatId',this.state.chat);
             const message ={
                 senderEmail:localStorage.getItem('senderEmail'),
@@ -103,13 +99,13 @@ class MessageForm extends Component {
         })
           .then((response) => {
             this.setState({
-              message2: response.data.message,
+              message: response.data.message
             });
             localStorage.setItem('message',this.state.message2);
             const  message={
               senderEmail:localStorage.getItem('senderEmail'),
               receiverEmail:localStorage.getItem('receiverEmail'),
-              message:this.state.message2,
+              message:this.state.message,
               chatId:localStorage.getItem('chatId')
           };
           MessageService.createMessage(message);  
@@ -139,13 +135,11 @@ class MessageForm extends Component {
             currentFile,
             progress,
             message2,
-            fileInfo,
-            showFile,
           } = this.state;
         return (
             <div>
 {currentFile && (
-          <div className="progress">
+          <div className="progress" style={{backgroundColor:'white'}}>
             <div
               className="progress-bar progress-bar-info progress-bar-striped"
               role="progressbar"
@@ -155,87 +149,62 @@ class MessageForm extends Component {
               style={{ width: progress + "%" }}
             >
               {progress}%
-             
-            </div>
-          </div>
-        )}
-        <div className="alert alert-light" role="alert">
-          {message2}
+              </div>
+              {message2}
+              </div>
+         )
+}
+<div className='container'>
+  <div className='row'>
+    <div className='card-body'>
+      <form>
+        <div class="input-group-append">
+          <input type='file'
+          multiple={false}
+          id="upload-button"
+          style={{display: 'none'}}
+          onChange = {this.selectFile}   
+          />          
         </div>
-                <div className='container'>
-                    <div className='row'>
-                     <div className='card-body'>
-                     
-                     
-                     
-                     
-                     
-                      <form>
-                      <div class="input-group-append">
-                      <label htmlFor='upload-button'>
-            <span className = 'image-button'>
-                <PaperClipOutlined
-                 className = "picture -icon" 
-                 style={{ color:'blue',fontSize:'40px'}}/>
-
-            </span>    
-            </label> 
-            <input type='file' 
-                    multiple={false}
-                     id="upload-button"
-                    style={{display: 'none'}}
-                    onChange = {this.selectFile}   
-            />          
-            </div>
-                   <div className="input-group mb-3">
-                      
-                          
-                          <input
-                          style={{backgroundColor:'white',
-                          outline:'none',
-                          outlineStyle:'none',
-                          borderTop:'none',
-                          borderLeft:'none',
-                          borderRight:'none',
-                          marginLeft:'20%',
-                
-                          borderBottom:'1px solid purple',
-                          
-                         }}
-                      
-                          className='form-control'
-                           value={this.state.message} 
-                         onChange={this.changeMessage}
-                          type="text" 
-                          placeholder="Message"/>
-                    <div class="input-group-append">
-                        <button
-                         className='btn' 
-                        //  disabled={!selectedFiles}
-                          onClick={this.saveMessage}>
-                              <SendOutlined 
-                            className="send-icon" 
-                            style={{color:'blue',fontSize:'40px'}}/>
-                       </button>
-
-
-
-
-
-                            </div>
-                            
-                            </div>
-                    </form>   
-
-                </div>
-                <div></div>
-            </div>
-
-       </div>
- </div>
- 
-        );
-    }
+        <div className="input-group mb-3">
+          <label htmlFor='upload-button'>
+            <PaperClipOutlined
+            className = "picture -icon"
+            style={{ color:'blue',fontSize:'40px', float:'inline-start'}}/>
+          </label>
+          <input style={{backgroundColor:'white',
+          outline:'none',
+          outlineStyle:'none',
+          borderTop:'none',
+          borderLeft:'none',
+          borderRight:'none',
+          marginLeft:'none',
+          float:'inline-start',
+          borderBottom:'1px solid purple',                
+          }}
+          className='form-control'
+          value={this.state.message} 
+          onChange={this.changeMessage}
+          type="text" 
+          placeholder="Message"/>
+          <div class="input-group-append">
+          <button 
+            className='btn'
+            enabled={!selectedFiles}
+            onClick={this.saveMessage}>
+            <SendOutlined 
+            className="send-icon" 
+            style={{color:'blue',fontSize:'40px'}}/>
+          </button>
+          </div>
+        </div>
+      </form>   
+     </div>
+    </div>
+  </div>
+</div>
+);
+}
 }
 
 export default MessageForm;

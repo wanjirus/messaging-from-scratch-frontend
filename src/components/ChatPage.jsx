@@ -1,53 +1,44 @@
-import React, { Component } from 'react';
+import Button from '@restart/ui/esm/Button';
+import React, { useEffect,useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import MessageService from '../Services/MessageService';
+import uploadFileService from '../Services/upload-file.service';
 import MessageForm from './MessageForm';
 import UploadFiles from './upload-files.component';
-//const keys;
-class ChatPage extends Component {
-    constructor(props){
-        super(props)
-        this.state={
-            sentMessages:[],
-            receivedMessages:[]
-
-            
-        }
-    }
-componentDidMount(){
+function ChatPage(){
+    const [receivedMessages, setReceivedMessages] = useState([]);
+    const [sentMessages, setSentMessages] = useState([]);
+    useEffect(()=>{
     
     MessageService.getMessageBySender().then(res=>{
-        this.setState({sentMessages:res.data})
-
+        setSentMessages(res.data);
     });  
 
 
     MessageService.getMessageByReceiver().then(res=>{
-        this.setState({receivedMessages:res.data})
+        setReceivedMessages(res.data)
         
     });
-
-}
-componentDidUpdate(){
-    
+}, []);
+(async () => {
     MessageService.getMessageByReceiver().then(res=>{
-        this.setState({receivedMessages:res.data})
+        setReceivedMessages(res.data);
         
     });
-}
-
+})();
   
-    render() {
+   
         return (
             <Container>
                  <Row>
                      
                      
                       <Col md={{ span: 6, offset: 0}}>
-                        <div>  
+                        <div> 
+                            <div><Button color='warning' onclick={MessageService.deleteChat}>delete chat</Button></div> 
                           <div className='chat'>
                           <div className='sentMes'>{
-                              this.state.sentMessages.map(message => 
+                              sentMessages.map(message => 
                                 <div key = {message.id}
                                  className='sentMessages'>
                                     
@@ -60,7 +51,7 @@ componentDidUpdate(){
                            </div>
                               
                         <div className='receivedMes'>
-                            {this.state.receivedMessages.map(Message =>
+                            {receivedMessages.map(Message =>
                               <div key = {Message.id}
                               className="receivedMessages">
                                  <p> {Message.message}</p>
@@ -80,6 +71,6 @@ componentDidUpdate(){
             </Container>
         );
     }
-}
+
 
 export default ChatPage;

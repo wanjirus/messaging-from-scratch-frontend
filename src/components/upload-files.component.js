@@ -1,34 +1,13 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import UploadService from "../Services/upload-file.service";
-export default class UploadFiles extends Component {
-  constructor(props) {
-    super(props);
-    // this.selectFile = this.selectFile.bind(this);
-    // this.upload = this.upload.bind(this);
+const UploadFiles = () => {
+      const [fileInfos, setFileInfos] = useState([]);
 
-    this.state = {
-      // selectedFiles: undefined,
-      // currentFile: undefined,
-      // progress: 0,
-      // message: "",
-
-      fileInfos: [],
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     UploadService.getFiles().then((response) => {
-      this.setState({
-        fileInfos: response.data,
-      });
+      setFileInfos(response.data);
     });
-  }
-
-  render() {
-    const {
-    fileInfos,
-    } = this.state;
-
+  }, []);
     return (
       <div>
         
@@ -46,4 +25,4 @@ export default class UploadFiles extends Component {
       </div>
     );
   }
-}
+export default UploadFiles

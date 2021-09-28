@@ -16,7 +16,7 @@ class UploadFilesService {
   }
  
   getFiles() {
-    return http.get("/files");
+    return http.get('/files',{params:{chatId:localStorage.getItem('chatId')}});
   }
 }
 
