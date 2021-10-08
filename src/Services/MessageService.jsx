@@ -6,6 +6,9 @@ const params={
     chatId:localStorage.getItem('chatId')
 }
 class MessageService{
+    getAllMessages(){
+        return axios.get(MESSAGE_API_BASE_URL)
+    }
      getMessageBySender(){
          return axios.get(MESSAGE_API_BASE_URL+ '/sender',{params})
         }

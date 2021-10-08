@@ -1,141 +1,172 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import UploadService from "../Services/upload-file.service";
 import MessageService from '../Services/MessageService';
 import { v4 as uuidv4 } from 'uuid';
 import { PaperClipOutlined, SendOutlined} from '@ant-design/icons';
-class MessageForm extends Component {
-    constructor(props){
-        super(props);
-        this.selectFile = this.selectFile.bind(this);
-        this.state = {
-            selectedFiles:'',
-            currentFile:[],
-            showFile:[],
-          message:'',
-           fileInfo:'',
-          message2:'',
-          value:'',
-          chat: ''
-        }
-    this.saveMessage=this.saveMessage.bind(this);
-    this.changeMessage=this.changeMessage.bind(this);
-    }
-    componentDidMount(){
-        MessageService.getChatExists().then(res=>{
-            this.setState({value:res.data})
-            console.log(this.state.value);
-            
-            if(!this.state.value){
-                
-              this.setState({chat:uuidv4()})
-              console.log(this.state.chat);
-            }
-            else{
-        
+import userEvent from '@testing-library/user-event';
+function MessageForm (){
+
+  const [selectedFiles, setSelectedFiles] = useState('');
+  const [currentFile, setCurrentFile] = useState([]);
+  const [ showFile, setShowFile] = useState([]);
+  const [message, setMessage] = useState('');
+  const [fileInfos, setFileInfos] = useState('');
+  const [message2, setMessage2] = useState('');
+  const [value, setValue] = useState('');
+  const [chat, setChat] = useState('');
+  const [progress, setProgrss] = useState('');
+  const message4 ={
+    senderEmail:localStorage.getItem('senderEmail'),
+    receiverEmail:localStorage.getItem('receiverEmail'),
+    message:message,
+    chatId:localStorage.getItem('chatId')
+}
+  
+  //         selectedFiles:'',
+    //         currentFile:[],
+    //         showFile:[],
+    //       message:'',
+    //        fileInfo:'',
+    //       message2:'',
+    //       value:'',
+    //       chat: ''
+    //     }
+    // this.saveMessage=this.saveMessage.bind(this);
+    // this.changeMessage=this.changeMessage.bind(this);
+    // }
+    useEffect(() => {
+       MessageService.getChatExists().then(res=>{
+            setValue(res.data);
+            console.log(value);
+            if(res.data===false){
+            //   // localStorage.setItem('chatId',chat);
+            //   MessageService.getChatId().then(res=>{
+            //     setChat(res.data.chatId);
+            // localStorage.setItem('chatId',chat);
+
+            //     console.log('lthis doesnt work');
+            //     console.log(res.data.chatId)
+            //     console.log(chat);
+            //     localStorage.setItem('chatId',chat);
+            //     // setChat(res.data.chatId);
+            //     // localStorage.setItem('chatId',chat);
+            // });
+            // localStorage.setItem('chatId',chat);
+            // }
+            localStorage.setItem('chatId', uuidv4());
+            // else{
+            //   setChat(uuidv4());
+          } else{
               MessageService.getChatId().then(res=>{
-                this.setState({chat:res.data})
-                console.log(this.state.chat.chatId);
-                localStorage.setItem('chatId',this.state.chat.chatId);
-               
-            });
-            }
-            
+          setChat(res.data);   
+          localStorage.setItem('chatId', res.data.chatId);
+          });
+          }
+
+
+
         });
         UploadService.getFiles().then((response) => {
-            this.setState({
-              fileInfo: response.data,
-            });
+          setFileInfos(response.data);
           });
-        }
-    selectFile = (event) =>{
-        this.setState({
-          selectedFiles: event.target.files,
-        });
+        }, []);
+    const selectFile = (event) =>{
+        setSelectedFiles(
+         event.target.files,
+        );
       }
       
-    saveMessage=(e)=>{
+      const changeMessage=(event)=>{
+         event.preventDefault();
+        setMessage( event.target.value);
+    }
 
-      if(!this.state.selectedFiles){
+   const saveMessage=(e)=>{
+
+      if(!selectedFiles){
         e.preventDefault();
-        if(!this.state.message){
+        if(!message){
             alert('please enter a message')
             return
         }
-        if(!this.state.value){
-            localStorage.setItem('chatId',this.state.chat);
-            const message ={
-                senderEmail:localStorage.getItem('senderEmail'),
-                receiverEmail:localStorage.getItem('receiverEmail'),
-                message:this.state.message,
-                chatId:localStorage.getItem('chatId')
-            }
-                MessageService.createMessage(message);
+
+
+        // const message4 ={
+        //     senderEmail:localStorage.getItem('senderEmail'),
+        //     receiverEmail:localStorage.getItem('receiverEmail'),
+        //     message:message,
+        //     chatId:localStorage.getItem('chatId')
+        // }
+        if(value===false){
+          localStorage.setItem('chatId', uuidv4());
+            // const message4 ={
+            //     senderEmail:localStorage.getItem('senderEmail'),
+            //     receiverEmail:localStorage.getItem('receiverEmail'),
+            //     message:message,
+            //     chatId:localStorage.getItem('chatId')
+            // }
+                MessageService.createMessage(message4);
     }
         else{
-            const  message={
-                senderEmail:localStorage.getItem('senderEmail'),
-                receiverEmail:localStorage.getItem('receiverEmail'),
-                message:this.state.message,
-                chatId:localStorage.getItem('chatId')
-            };
-            MessageService.createMessage(message);   
+        //   MessageService.getChatId().then(res=>{
+        //   setChat(res.data.chatId);
+        //   localStorage.setItem('chatId', res.data.chatId);
+        //   });
+            // const  message22={
+            //     senderEmail:localStorage.getItem('senderEmail'),
+            //     receiverEmail:localStorage.getItem('receiverEmail'),
+            //     message:message,
+            //     chatId:localStorage.getItem('chatId')
+            // };
+            MessageService.createMessage(message4);   
             }
-            window.location.reload(false);
+             window.location.reload(false);
      }
   
 
    else {
   
-        let currentFile = this.state.selectedFiles[0];
-        this.setState({
+        let currentFile = selectedFiles[0];
+        setCurrentFile({
           progress: 0,
           showFile: currentFile,
         });
         UploadService.upload(currentFile, (event) => {
-          this.setState({
+          setShowFile({
             progress: Math.round((100 * event.loaded) / event.total),
             showFile:currentFile,
           });
         })
           .then((response) => {
-            this.setState({
-              message: response.data.message
-            });
-            localStorage.setItem('message',this.state.message2);
-            const  message={
-              senderEmail:localStorage.getItem('senderEmail'),
-              receiverEmail:localStorage.getItem('receiverEmail'),
-              message:this.state.message,
-              chatId:localStorage.getItem('chatId')
-          };
-          MessageService.createMessage(message);  
+            setMessage(response.data.message
+          );
+            localStorage.setItem('message', message);
+        // 
+        //    const  message={
+        //       senderEmail:localStorage.getItem('senderEmail'),
+        //       receiverEmail:localStorage.getItem('receiverEmail'),
+        //       message:message,
+        //       chatId:localStorage.getItem('chatId')
+        //   };
+          MessageService.createMessage(message4);  
             return UploadService.getFiles();
           })
           .then((files) => {
-            this.setState({
-              fileInfo: files.data,
-            });
+            setFileInfos(
+              files.data,
+            );
             
           })
           .catch(() => {
-            this.setState({
-              progress: 0,
-              message: "Could not upload the file!",
-            });
+            setMessage(
+              
+              "Could not upload the file!",
+            );
           }); 
       }
     }
-    changeMessage=(event)=>{
-        event.preventDefault();
-        this.setState({message: event.target.value});
-    }
-    render(){
-        const {
-            selectedFiles,
-            currentFile,
-            progress,
-            message2,
-          } = this.state;
+    
+    
         return (
             <div>
 {currentFile && (
@@ -163,7 +194,7 @@ class MessageForm extends Component {
           multiple={false}
           id="upload-button"
           style={{display: 'none'}}
-          onChange = {this.selectFile}   
+          onChange = {selectFile}   
           />          
         </div>
         <div className="input-group mb-3">
@@ -183,15 +214,15 @@ class MessageForm extends Component {
           borderBottom:'1px solid purple',                
           }}
           className='form-control'
-          value={this.state.message} 
-          onChange={this.changeMessage}
+          value={message} 
+          onChange={changeMessage}
           type="text" 
           placeholder="Message"/>
           <div class="input-group-append">
           <button 
             className='btn'
             enabled={!selectedFiles}
-            onClick={this.saveMessage}>
+            onClick={saveMessage}>
             <SendOutlined 
             className="send-icon" 
             style={{color:'blue',fontSize:'40px'}}/>
@@ -205,6 +236,6 @@ class MessageForm extends Component {
 </div>
 );
 }
-}
+
 
 export default MessageForm;

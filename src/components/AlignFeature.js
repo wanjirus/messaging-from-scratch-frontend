@@ -5,28 +5,29 @@ import MessageService from '../Services/MessageService';
 // import UploadFileService from '../Services/upload-file.service';
 import MessageForm from './MessageForm';
 import UploadFiles from './upload-files.component';
-function ChatPage(){
-    const [receivedMessages, setReceivedMessages] = useState([]);
-    const [sentMessages, setSentMessages] = useState([]);
+function AlignFeature(){
+    // const [receivedMessages, setReceivedMessages] = useState([]);
+    // const [sentMessages, setSentMessages] = useState([]);
+    const [allMessages, setAllMessages] = useState([]);
     useEffect(()=>{
 
     
-    MessageService.getMessageBySender().then(res=>{
-        setSentMessages(res.data);
+    MessageService.getAllMessages().then(res=>{
+        setAllMessages(res.data);
     });  
 
 
-    MessageService.getMessageByReceiver().then(res=>{
-        setReceivedMessages(res.data)
+    // MessageService.getMessageByReceiver().then(res=>{
+    //     setReceivedMessages(res.data)
         
-    });
+    // });
 }, []);
-(async () => {
-    MessageService.getMessageByReceiver().then(res=>{
-        setReceivedMessages(res.data);
+// (async () => {
+//     MessageService.getMessageByReceiver().then(res=>{
+//         setReceivedMessages(res.data);
         
-    });
-})();
+//     });
+// })();
   
    
         return (
@@ -39,7 +40,7 @@ function ChatPage(){
                             <div><Button color='warning' onclick={MessageService.deleteChat}>delete chat</Button></div> 
                           <div className='chat'>
                           <div className='sentMes'>{
-                              sentMessages.map(message => 
+                              allMessages.map(message => 
                                 <div key = {message.id}
                                  className='sentMessages'>
                                     
@@ -49,17 +50,10 @@ function ChatPage(){
                                      {/* <p className='sentTime'>{message.createdAt}</p> */}
                                 </div>
                                  )} 
+                                 
                            </div>
-                              
-                        <div className='receivedMes'>
-                            {receivedMessages.map(Message =>
-                              <div key = {Message.id}
-                              className="receivedMessages">
-                                 <p> {Message.message}</p>
-                                  {/* <p className='receivedTime'>{Message.createdAt}</p> */}
-                               </div>                             
-                               )}
-                        </div>                      
+                           //here 
+
                         </div>
                            <div style={{position:'static'}}>
                                <MessageForm /> 
@@ -74,4 +68,15 @@ function ChatPage(){
     }
 
 
-export default ChatPage;
+export default AlignFeature;
+
+
+{/* <div className='receivedMes'>
+{receivedMessages.map(Message =>
+  <div key = {Message.id}
+  className="receivedMessages">
+     <p> {Message.message}</p>
+      {/* <p className='receivedTime'>{Message.createdAt}</p> */}
+//    </div>                             
+//    )}
+// </div>  

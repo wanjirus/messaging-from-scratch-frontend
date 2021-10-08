@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import UploadService from "../Services/upload-file.service";
+import UploadFileService from "../Services/upload-file.service";
 const UploadFiles = () => {
       const [fileInfos, setFileInfos] = useState([]);
 
   useEffect(() => {
-    UploadService.getFiles().then((response) => {
+    UploadFileService.getFiles().then((response) => {
       setFileInfos(response.data);
     });
   }, []);
