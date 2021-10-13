@@ -7,7 +7,7 @@ const params={
 }
 class MessageService{
     getAllMessages(){
-        return axios.get(MESSAGE_API_BASE_URL)
+        return axios.get(MESSAGE_API_BASE_URL,{params})
     }
      getMessageBySender(){
          return axios.get(MESSAGE_API_BASE_URL+ '/sender',{params})

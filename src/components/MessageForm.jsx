@@ -106,7 +106,7 @@ function MessageForm (){
             //     chatId:localStorage.getItem('chatId')
             // }
                 MessageService.createMessage(message4);
-    }
+       }
         else{
         //   MessageService.getChatId().then(res=>{
         //   setChat(res.data.chatId);

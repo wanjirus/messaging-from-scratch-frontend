@@ -37,24 +37,35 @@
 .sentMessages{                              
 text-align:center;
 background-color:rgb(206, 206, 206);
-margin-top:10px; 
-width:flex;
-padding: 5px;
+/* margin-top:10px;  */
 margin:10px;
 border-radius:20px;
 border-bottom-right-radius: 0px;
 color:rgb(0, 0, 0);
+margin-left:auto;
+padding: 10px;
+width:fit-content;
+margin-bottom: 0px; 
+}
+.registers{
+  margin-left:auto;
+  text-align:center;
+  width:fit-content;
+  font-size: 12px;
+  padding: 5px;
+  border-radius:100%;
+  background-color:rgb(224, 233, 222);
+  
 }
 .receivedMessages{
   text-align:center;
   background-color:rgb(230, 203, 252);
-  margin-top:10px; 
-  width:flex;
-  padding: 5px;
-  margin:10px;
+  width:fit-content;
+  padding: 10px;
   border-radius:20px;
   border-top-left-radius: 0px;
   color:rgb(0, 0, 0);
+  margin:10px;
 }
 .receivedTime{
   font-size:12px;

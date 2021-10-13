@@ -21,12 +21,12 @@ function ChatPage(){
         
     });
 }, []);
-(async () => {
-    MessageService.getMessageByReceiver().then(res=>{
-        setReceivedMessages(res.data);
+// (async () => {
+//     MessageService.getMessageByReceiver().then(res=>{
+//         setReceivedMessages(res.data);
         
-    });
-})();
+//     });
+// })();
   
    
         return (
