@@ -36,7 +36,7 @@ function ChatPage(){
                      
                       <Col md={{ span: 6, offset: 0}}>
                         <div> 
-                            <div><Button color='warning' onclick={MessageService.deleteChat}>delete chat</Button></div> 
+                            <div><Button color='warning' onClick={MessageService.deleteChat}>delete chat</Button></div> 
                           <div className='chat'>
                           <div className='sentMes'>{
                               sentMessages.map(message => 

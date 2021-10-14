@@ -16,7 +16,7 @@ function AlignFeature(){
      setInterval(()=>{
          setTemp((prevTemp)=>prevTemp+1)
 
-     },)
+     },10000)
     }, [])
     useEffect(()=>{
         MessageService.getAllMessages().then(res=>{
@@ -65,7 +65,7 @@ function AlignFeature(){
                      
                       <Col md={{ span: 6, offset: 0}}>
                         <div> 
-                            <div><Button color='warning' onclick={MessageService.deleteChat}>delete chat</Button></div> 
+                            <div><Button color='warning' onClick={MessageService.deleteChat}>delete chat</Button></div> 
                           <div className='chat'>
                           <div>{
                               allMessages.map(message => 

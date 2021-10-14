@@ -21,50 +21,18 @@ function MessageForm (){
     message:message,
     chatId:localStorage.getItem('chatId')
 }
-  
-  //         selectedFiles:'',
-    //         currentFile:[],
-    //         showFile:[],
-    //       message:'',
-    //        fileInfo:'',
-    //       message2:'',
-    //       value:'',
-    //       chat: ''
-    //     }
-    // this.saveMessage=this.saveMessage.bind(this);
-    // this.changeMessage=this.changeMessage.bind(this);
-    // }
     useEffect(() => {
        MessageService.getChatExists().then(res=>{
             setValue(res.data);
             console.log(value);
             if(res.data===false){
-            //   // localStorage.setItem('chatId',chat);
-            //   MessageService.getChatId().then(res=>{
-            //     setChat(res.data.chatId);
-            // localStorage.setItem('chatId',chat);
-
-            //     console.log('lthis doesnt work');
-            //     console.log(res.data.chatId)
-            //     console.log(chat);
-            //     localStorage.setItem('chatId',chat);
-            //     // setChat(res.data.chatId);
-            //     // localStorage.setItem('chatId',chat);
-            // });
-            // localStorage.setItem('chatId',chat);
-            // }
             localStorage.setItem('chatId', uuidv4());
-            // else{
-            //   setChat(uuidv4());
           } else{
               MessageService.getChatId().then(res=>{
           setChat(res.data);   
           localStorage.setItem('chatId', res.data.chatId);
           });
           }
-
-
-
         });
         UploadService.getFiles().then((response) => {
           setFileInfos(response.data);
@@ -75,12 +43,10 @@ function MessageForm (){
          event.target.files,
         );
       }
-      
       const changeMessage=(event)=>{
          event.preventDefault();
         setMessage( event.target.value);
     }
-
    const saveMessage=(e)=>{
 
       if(!selectedFiles){
@@ -89,41 +55,15 @@ function MessageForm (){
             alert('please enter a message')
             return
         }
-
-
-        // const message4 ={
-        //     senderEmail:localStorage.getItem('senderEmail'),
-        //     receiverEmail:localStorage.getItem('receiverEmail'),
-        //     message:message,
-        //     chatId:localStorage.getItem('chatId')
-        // }
         if(value===false){
           localStorage.setItem('chatId', uuidv4());
-            // const message4 ={
-            //     senderEmail:localStorage.getItem('senderEmail'),
-            //     receiverEmail:localStorage.getItem('receiverEmail'),
-            //     message:message,
-            //     chatId:localStorage.getItem('chatId')
-            // }
                 MessageService.createMessage(message4);
        }
         else{
-        //   MessageService.getChatId().then(res=>{
-        //   setChat(res.data.chatId);
-        //   localStorage.setItem('chatId', res.data.chatId);
-        //   });
-            // const  message22={
-            //     senderEmail:localStorage.getItem('senderEmail'),
-            //     receiverEmail:localStorage.getItem('receiverEmail'),
-            //     message:message,
-            //     chatId:localStorage.getItem('chatId')
-            // };
             MessageService.createMessage(message4);   
             }
              window.location.reload(false);
      }
-  
-
    else {
   
         let currentFile = selectedFiles[0];
@@ -141,13 +81,6 @@ function MessageForm (){
             setMessage(response.data.message
           );
             localStorage.setItem('message', message);
-        // 
-        //    const  message={
-        //       senderEmail:localStorage.getItem('senderEmail'),
-        //       receiverEmail:localStorage.getItem('receiverEmail'),
-        //       message:message,
-        //       chatId:localStorage.getItem('chatId')
-        //   };
           MessageService.createMessage(message4);  
             return UploadService.getFiles();
           })
@@ -165,8 +98,6 @@ function MessageForm (){
           }); 
       }
     }
-    
-    
         return (
             <div>
 {currentFile && (
@@ -219,14 +150,14 @@ function MessageForm (){
           type="text" 
           placeholder="Message"/>
           <div class="input-group-append">
-          <button 
+          <Button 
             className='btn'
             enabled={!selectedFiles}
             onClick={saveMessage}>
             <SendOutlined 
             className="send-icon" 
             style={{color:'blue',fontSize:'40px'}}/>
-          </button>
+          </Button>
           </div>
         </div>
       </form>   
